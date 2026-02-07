@@ -1,31 +1,34 @@
-package com.kata.bank_challenge.model;
+package com.kata.bank_challenge.entity;
 
 import com.kata.bank_challenge.dto.CreateAccountDTO;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.Random;
 import java.util.UUID;
 
-@Setter
-@Getter
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Account {
-    private String id;
+    @Id
+    @GeneratedValue
+    private UUID id;
+
+    @OneToOne
+    @JoinColumn(name = "customer_id")
     private Customer customer;
+
     private String accountNumber;
+
+    @Enumerated(EnumType.STRING)
     private StatusEnum status;
 
-    public Account(String id, Customer customer, String accountNumber, StatusEnum status) {
-        this.id = id;
-        this.customer = customer;
-        this.accountNumber = accountNumber;
-        this.status = status;
-    }
-
     public Account(CreateAccountDTO accountDto, Customer customer) {
-        this.id = UUID.randomUUID().toString();
         this.customer = customer;
-        this.accountNumber = generateRandomAccountNumber(11);
+        this.accountNumber = generateRandomAccountNumber(10);
         this.status = accountDto.getStatus();
     }
 

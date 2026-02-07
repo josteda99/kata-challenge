@@ -1,29 +1,10 @@
 package com.kata.bank_challenge.repository;
 
-import com.kata.bank_challenge.model.Customer;
+import com.kata.bank_challenge.entity.Customer;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
-public class CustomerRepository {
-    private List<Customer> customers = new ArrayList<>();
-
-    public List<Customer> findAll() {
-        return customers;
-    }
-
-    public Customer save(Customer customer) {
-        customers.add(customer);
-        return customer;
-    }
-
-    public Customer findById(String id) {
-        for (Customer customer : customers) {
-            if (customer.getId().equals(id)) {
-                return customer;
-            }
-        }
-        return null;
-    }
-}
+@Repository
+public interface CustomerRepository extends JpaRepository<Customer, UUID> { }

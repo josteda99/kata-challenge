@@ -1,6 +1,6 @@
 package com.kata.bank_challenge.dto;
 
-import com.kata.bank_challenge.model.DocumentTypeEnum;
+import com.kata.bank_challenge.entity.DocumentTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
 

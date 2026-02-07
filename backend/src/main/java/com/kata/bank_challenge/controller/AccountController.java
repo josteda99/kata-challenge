@@ -1,8 +1,9 @@
 package com.kata.bank_challenge.controller;
 
 import com.kata.bank_challenge.dto.CreateAccountDTO;
-import com.kata.bank_challenge.model.Account;
-import com.kata.bank_challenge.service.BankService;
+import com.kata.bank_challenge.entity.Account;
+import com.kata.bank_challenge.service.BankServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,7 +11,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/accounts")
 public class AccountController {
-    private final BankService service = new BankService();
+    @Autowired
+    private BankServiceImpl service;
 
     @PostMapping
     public Account createCustomer(@RequestBody CreateAccountDTO accountDto) {

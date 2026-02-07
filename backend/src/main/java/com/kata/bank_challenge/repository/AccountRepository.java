@@ -1,19 +1,11 @@
 package com.kata.bank_challenge.repository;
 
-import com.kata.bank_challenge.model.Account;
+import com.kata.bank_challenge.entity.Account;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.UUID;
 
-public class AccountRepository {
-    private List<Account> accounts = new ArrayList<>();
-
-    public List<Account> findAll() {
-        return accounts;
-    }
-
-    public Account save(Account account) {
-        accounts.add(account);
-        return account;
-    }
+@Repository
+public interface AccountRepository extends JpaRepository<Account, UUID> {
 }

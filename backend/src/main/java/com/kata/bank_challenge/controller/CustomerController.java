@@ -1,8 +1,8 @@
 package com.kata.bank_challenge.controller;
 
 import com.kata.bank_challenge.dto.CreateCustomerDTO;
-import com.kata.bank_challenge.model.Customer;
-import com.kata.bank_challenge.service.BankService;
+import com.kata.bank_challenge.entity.Customer;
+import com.kata.bank_challenge.service.BankServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,7 +11,11 @@ import java.util.List;
 @RequestMapping("/api/customers")
 public class CustomerController {
 
-    private final BankService service = new BankService();
+    private final BankServiceImpl service;
+
+    public CustomerController(BankServiceImpl service) {
+        this.service = service;
+    }
 
     @PostMapping
     public Customer createCustomer(@RequestBody CreateCustomerDTO customer) {

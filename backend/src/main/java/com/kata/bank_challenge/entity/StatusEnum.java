@@ -1,4 +1,4 @@
-package com.kata.bank_challenge.model;
+package com.kata.bank_challenge.entity;
 
 public enum StatusEnum {
     ACTIVE, INACTIVE
