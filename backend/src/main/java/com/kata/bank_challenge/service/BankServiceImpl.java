@@ -6,17 +6,19 @@ import com.kata.bank_challenge.entity.Account;
 import com.kata.bank_challenge.entity.Customer;
 import com.kata.bank_challenge.repository.AccountRepository;
 import com.kata.bank_challenge.repository.CustomerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class BankServiceImpl implements BankService {
-    @Autowired
-    private CustomerRepository customerRepository;
-    @Autowired
-    private AccountRepository accountRepository;
+    private final CustomerRepository customerRepository;
+    private final AccountRepository accountRepository;
+
+    public BankServiceImpl(CustomerRepository customerRepository, AccountRepository accountRepository) {
+        this.customerRepository = customerRepository;
+        this.accountRepository = accountRepository;
+    }
 
     @Override
     public List<Customer> getAllCustomers() {
