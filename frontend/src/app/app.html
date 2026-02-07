@@ -4,8 +4,7 @@
   <div class="continer m-5">
     <h1>Bank</h1>
 
-    <h2>Create customer</h2>
-
+    <h2 class="mt-5">Create customer</h2>
     <form
       class="flex flex-col m-5 gap-3"
       action="submit"
@@ -26,11 +25,23 @@
       <button type="submit">Create customer</button>
     </form>
 
-    <h2>Customer List</h2>
+    <h2 class="mt-5">Customer List</h2>
     <ul>
       @for (customer of customers(); track customer.id) {
-        <li>{{ customer.id }} - {{ customer.fullName }} - {{ customer.email }}</li>
+        <li (click)="selectCustomer(customer.id)">
+          {{ customer.id }} - {{ customer.fullName }} - {{ customer.email }}
+        </li>
       }
     </ul>
+
+    <h2 class="mt-5">Selected User</h2>
+
+    @if (selectedCustomer()) {
+      <p>id: {{ selectedCustomer()?.documentType }} - {{ selectedCustomer()?.id }}</p>
+      <p>name: {{ selectedCustomer()?.fullName }}</p>
+      <p>email: {{ selectedCustomer()?.email }}</p>
+    } @else {
+      <p>no selected user yet</p>
+    }
   </div>
 }

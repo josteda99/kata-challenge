@@ -10,11 +10,13 @@ import { tapResponse } from '@ngrx/operators';
 interface BankState {
   customers: Customer[];
   isLoading: boolean;
+  selectedCustomer: Customer | null;
 }
 
 const initialState: BankState = {
   customers: [],
   isLoading: false,
+  selectedCustomer: null,
 };
 
 export const BankStore = signalStore(
@@ -56,5 +58,10 @@ export const BankStore = signalStore(
         }),
       ),
     ),
+    selectCustomer(customerId: string): void {
+      patchState(store, {
+        selectedCustomer: store.customers().find((customer) => customer.id === customerId),
+      });
+    },
   })),
 );

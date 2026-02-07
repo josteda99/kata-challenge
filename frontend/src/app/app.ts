@@ -17,6 +17,7 @@ export class App implements OnInit {
 
   public customers = this._store.customers;
   public isLoading = this._store.isLoading;
+  public selectedCustomer = this._store.selectedCustomer;
 
   public customerForm = this.fb.nonNullable.group({
     documentType: [<DocType>'CC'],
@@ -40,5 +41,9 @@ export class App implements OnInit {
     };
 
     this._store.createCustomer(newCustomer);
+  }
+
+  public selectCustomer(customerId: string) {
+    this._store.selectCustomer(customerId);
   }
 }
