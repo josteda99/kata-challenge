@@ -8,7 +8,7 @@ export interface Customer {
 
 export interface Account {
   id: string;
-  customer: Customer;
+  customerId: string;
   accountNumber: string;
   status: Status;
 }
@@ -21,4 +21,9 @@ export interface NewCustomer {
   documentNumber: string;
   fullName: string;
   email: string;
+}
+
+export interface NewAccount {
+  customerId: string;
+  status: Status;
 }

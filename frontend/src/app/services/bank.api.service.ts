@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
-import { Customer, NewCustomer } from '../models/bank.models';
+import { Account, Customer, NewAccount, NewCustomer } from '../models/bank.models';
 
 @Injectable({
   providedIn: 'root',
@@ -25,6 +25,19 @@ export class BankApiService {
       documentNumber: newCustomer.documentNumber,
       fullName: newCustomer.fullName,
       email: newCustomer.email,
+    });
+  }
+
+  public checkAccountInformation(customerId: string) {
+    return of<Account | null>(null);
+  }
+
+  public createAccount(newAccount: NewAccount) {
+    return of<Account>({
+      id: crypto.randomUUID(),
+      customerId: newAccount.customerId,
+      accountNumber: crypto.randomUUID(),
+      status: newAccount.status,
     });
   }
 }

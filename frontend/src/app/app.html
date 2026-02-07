@@ -40,6 +40,25 @@
       <p>id: {{ selectedCustomer()?.documentType }} - {{ selectedCustomer()?.id }}</p>
       <p>name: {{ selectedCustomer()?.fullName }}</p>
       <p>email: {{ selectedCustomer()?.email }}</p>
+      @if (accountInformation()) {
+        <h3 class="mt-4">account information</h3>
+        <p>id: {{ accountInformation()?.id }}</p>
+        <p>account number: {{ accountInformation()?.accountNumber }}</p>
+        <p>status: {{ accountInformation()?.status }}</p>
+      } @else {
+        <form
+          class="flex flex-col m-5 gap-3"
+          action="submit"
+          [formGroup]="accountForm"
+          (ngSubmit)="createAccount()"
+        >
+          <select formControlName="status">
+            <option value="ACTIVE">ACTIVE</option>
+            <option value="INACTIVE">INACTIVE</option>
+          </select>
+          <button type="submit">Create account</button>
+        </form>
+      }
     } @else {
       <p>no selected user yet</p>
     }
