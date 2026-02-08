@@ -4,9 +4,21 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { DocType, NewCustomer, Status } from './models/bank.models';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatTableModule } from '@angular/material/table';
 @Component({
   selector: 'app-root',
-  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule],
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatCardModule,
+    MatButtonModule,
+    MatTableModule,
+  ],
   providers: [BankStore],
   templateUrl: './app.html',
   styleUrl: './app.css',
@@ -19,6 +31,8 @@ export class App implements OnInit {
   public isLoading = this._store.isLoading;
   public selectedCustomer = this._store.selectedCustomer;
   public accountInfo = this._store.accoutInfo;
+
+  public columns = signal(['No', 'fullName', 'email', 'hasAccount']);
 
   public customerForm = this.fb.nonNullable.group({
     documentType: [<DocType>'CC'],

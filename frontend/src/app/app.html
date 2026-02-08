@@ -4,36 +4,79 @@
   <div class="continer m-5">
     <h1>Bank</h1>
 
-    <h2 class="mt-5">Create customer</h2>
-    <form
-      class="flex flex-col m-5 gap-3"
-      action="submit"
-      [formGroup]="customerForm"
-      (ngSubmit)="createCustomer()"
-    >
-      <select formControlName="documentType">
-        <option value="CC">CC</option>
-        <option value="CE">CE</option>
-        <option value="PAS">PAS</option>
-      </select>
-      <input class="border-2 border-black" formControlName="documentNumber" required />
-      <input class="border-2 border-black" formControlName="fullName" required />
-      <input class="border-2 border-black" type="email" formControlName="email" required />
-      @if (customerForm.controls.email.invalid && customerForm.controls.email.touched) {
-        <p>email is required</p>
-      }
-      <button type="submit">Create customer</button>
-    </form>
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title> Create customer</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form
+          class="flex flex-col m-5 gap-3"
+          action="submit"
+          [formGroup]="customerForm"
+          (ngSubmit)="createCustomer()"
+        >
+          <mat-form-field>
+            <mat-label>Select me</mat-label>
+            <mat-select formControlName="documentType">
+              <mat-option value="CC">CC</mat-option>
+              <mat-option value="CE">CE</mat-option>
+              <mat-option value="PAS">PAS</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Enter document number</mat-label>
+            <input matInput formControlName="documentNumber" />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Enter full name</mat-label>
+            <input matInput formControlName="fullName" />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Enter your email</mat-label>
+            <input matInput placeholder="pat@example.com" formControlName="email" required />
+            @if (customerForm.controls.email.invalid && customerForm.controls.email.touched) {
+              <mat-error>email is required</mat-error>
+            }
+          </mat-form-field>
+
+          <button matButton type="submit">Create customer</button>
+        </form>
+      </mat-card-content>
+    </mat-card>
 
     <h2 class="mt-5">Customer List</h2>
-    <ul>
-      @for (customer of customers(); track customer.id) {
-        <li (click)="selectCustomer(customer.id)">
-          {{ customer.id }} - {{ customer.fullName }} - {{ customer.email }} -
-          {{ customer.hasAccount }}
-        </li>
-      }
-    </ul>
+
+    <table mat-table [dataSource]="customers()" class="mat-elevation-z8">
+      <ng-container matColumnDef="No">
+        <th mat-header-cell *matHeaderCellDef>No.</th>
+        <td mat-cell *matCellDef="let customer; let i = index">
+          {{ i + 1 }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="fullName">
+        <th mat-header-cell *matHeaderCellDef>Full Name</th>
+        <td mat-cell *matCellDef="let customer">{{ customer.fullName }}</td>
+      </ng-container>
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>Email</th>
+        <td mat-cell *matCellDef="let customer">{{ customer.email }}</td>
+      </ng-container>
+      <ng-container matColumnDef="hasAccount">
+        <th mat-header-cell *matHeaderCellDef>hasAccount</th>
+        <td mat-cell *matCellDef="let customer">{{ customer.hasAccount }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columns()"></tr>
+      <tr
+        mat-row
+        *matRowDef="let customer; columns: columns()"
+        (click)="selectCustomer(customer.id)"
+        style="cursor: pointer"
+      ></tr>
+    </table>
 
     <h2 class="mt-5">Selected User</h2>
 
