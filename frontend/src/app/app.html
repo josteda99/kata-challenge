@@ -16,7 +16,7 @@
               [formGroup]="customerForm"
               (ngSubmit)="createCustomer()"
             >
-              <mat-form-field class="w-full">
+              <mat-form-field appearance="outline" class="w-full">
                 <mat-label>Select me</mat-label>
                 <mat-select formControlName="documentType">
                   <mat-option value="CC">CC</mat-option>
@@ -25,17 +25,17 @@
                 </mat-select>
               </mat-form-field>
 
-              <mat-form-field class="w-full" appearance="fill">
+              <mat-form-field class="w-full" appearance="outline">
                 <mat-label>Enter document number</mat-label>
                 <input matInput formControlName="documentNumber" />
               </mat-form-field>
 
-              <mat-form-field class="w-full" appearance="fill">
+              <mat-form-field class="w-full" appearance="outline">
                 <mat-label>Enter full name</mat-label>
                 <input matInput formControlName="fullName" />
               </mat-form-field>
 
-              <mat-form-field class="w-full" appearance="fill">
+              <mat-form-field class="w-full" appearance="outline">
                 <mat-label>Enter your email</mat-label>
                 <input matInput placeholder="pat@example.com" formControlName="email" required />
                 @if (customerForm.controls.email.invalid && customerForm.controls.email.touched) {
@@ -54,7 +54,7 @@
           <mat-card-header>
             <mat-card-title>Selected User</mat-card-title>
             @if (!selectedCustomer()) {
-              <mat-card-subtitle>no selected user yet</mat-card-subtitle>
+              <mat-card-subtitle>No selected user yet</mat-card-subtitle>
             }
           </mat-card-header>
           <mat-card-content>
@@ -75,24 +75,26 @@
                 <mat-list-item>Status: {{ accountInfo()?.status }}</mat-list-item>
               </mat-list>
             } @else {
-              <h2 class="text-xl">Create Account</h2>
+              @if (selectedCustomer()) {
+                <h2 class="text-xl">Create Account</h2>
 
-              <form
-                class="mt-5"
-                action="submit"
-                [formGroup]="accountForm"
-                (ngSubmit)="createAccount()"
-              >
-                <mat-form-field class="w-full">
-                  <mat-label>Status</mat-label>
-                  <mat-select formControlName="status">
-                    <mat-option value="ACTIVE">ACTIVE</mat-option>
-                    <mat-option value="INACTIVE">INACTIVE</mat-option>
-                  </mat-select>
-                </mat-form-field>
+                <form
+                  class="mt-5"
+                  action="submit"
+                  [formGroup]="accountForm"
+                  (ngSubmit)="createAccount()"
+                >
+                  <mat-form-field appearance="outline" class="w-full">
+                    <mat-label>Status</mat-label>
+                    <mat-select formControlName="status">
+                      <mat-option value="ACTIVE">ACTIVE</mat-option>
+                      <mat-option value="INACTIVE">INACTIVE</mat-option>
+                    </mat-select>
+                  </mat-form-field>
 
-                <button matButton="filled" type="submit">Create account</button>
-              </form>
+                  <button matButton="filled" type="submit">Create account</button>
+                </form>
+              }
             }
           </mat-card-content>
         </mat-card>
