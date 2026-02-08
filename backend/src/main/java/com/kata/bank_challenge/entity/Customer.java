@@ -20,15 +20,19 @@ public class Customer {
     private DocumentTypeEnum documentType;
 
     private String documentNumber;
-
+    private String fullName;
     private String email;
 
 
     public Customer(DocumentTypeEnum documentType,
                     String documentNumber,
-                    String email) {
+                    String email,
+                    String fullName) {
         this.documentType = documentType;
         this.documentNumber = documentNumber;
         this.email = email;
+        this.fullName = fullName;
     }
+
+
 }

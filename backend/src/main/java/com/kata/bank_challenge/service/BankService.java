@@ -1,18 +1,19 @@
 package com.kata.bank_challenge.service;
 
-import com.kata.bank_challenge.dto.CreateAccountDTO;
-import com.kata.bank_challenge.dto.CreateCustomerDTO;
-import com.kata.bank_challenge.entity.Account;
-import com.kata.bank_challenge.entity.Customer;
+import com.kata.bank_challenge.dto.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 public interface BankService {
-    List<Customer> getAllCustomers();
+    List<CustomerWithAccountDto> getAllCustomers();
 
-    Customer createCustomer(CreateCustomerDTO customerDto);
+    CustomerWithAccountDto createCustomer(CreateCustomerDTO customer);
 
-    Account createAccount(CreateAccountDTO accountDto);
+    CustomerWithAccountDto createAccount(CreateAccountDTO account);
 
-    List<Account> getAllAccounts();
+    List<AccountDto> getAllAccounts();
+
+    Optional<AccountDto> getAccountByCustomerId(UUID accountId);
 }

@@ -1,7 +1,6 @@
 package com.kata.bank_challenge.service;
 
-import com.kata.bank_challenge.dto.CreateAccountDTO;
-import com.kata.bank_challenge.dto.CreateCustomerDTO;
+import com.kata.bank_challenge.dto.*;
 import com.kata.bank_challenge.entity.Account;
 import com.kata.bank_challenge.entity.Customer;
 import com.kata.bank_challenge.repository.AccountRepository;
@@ -9,6 +8,8 @@ import com.kata.bank_challenge.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class BankServiceImpl implements BankService {
@@ -21,26 +22,40 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public List<Customer> getAllCustomers() {
-        return customerRepository.findAll();
+    public List<CustomerWithAccountDto> getAllCustomers() {
+        return customerRepository.findAllWithAccount().stream().map(r -> new CustomerWithAccountDto(
+                        (Customer) r[0],
+                        (Account) r[1]
+                ))
+                .toList();
     }
 
     @Override
-    public Customer createCustomer(CreateCustomerDTO customerDto) {
-        Customer customer = new Customer(customerDto.getDocumentType(), customerDto.getDocumentNumber(), customerDto.getEmail());
-        return customerRepository.save(customer);
+    public CustomerWithAccountDto createCustomer(CreateCustomerDTO customerDto) {
+        Customer customer = new Customer(customerDto.getDocumentType(), customerDto.getDocumentNumber(), customerDto.getEmail(), customerDto.getFullName());
+        Customer newCustomer = customerRepository.save(customer);
+        return new CustomerWithAccountDto(newCustomer, null);
     }
 
     @Override
-    public Account createAccount(CreateAccountDTO accountDto) {
-        Customer customer = customerRepository.findById(accountDto.getCustomerId()).orElseThrow();
-        Account account = new Account(accountDto, customer);
-        return accountRepository.save(account);
+    public CustomerWithAccountDto createAccount(CreateAccountDTO account) {
+        Customer customer = customerRepository.findById(account.getCustomerId()).orElseThrow();
+        Account temporalAccount = new Account(account, customer);
+        //check if already has a custoomer linked
+        Account newAccount = accountRepository.save(temporalAccount);
+        return new CustomerWithAccountDto(customer,newAccount);
     }
 
     @Override
-    public List<Account> getAllAccounts() {
-        return accountRepository.findAll();
+    public List<AccountDto> getAllAccounts() {
+        return accountRepository.findAll().stream()
+                .map(AccountDto::new)
+                .toList();
     }
 
+    @Override
+    public Optional<AccountDto> getAccountByCustomerId(UUID accountId) {
+        return accountRepository.findByCustomerId(accountId)
+                .map(AccountDto::new);
+    }
 }

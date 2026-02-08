@@ -1,28 +1,35 @@
-import { Account, NewAccount, NewCustomer, Status } from './../models/bank.models';
+import {
+  Account,
+  CustomerWithAccount,
+  NewAccount,
+  NewCustomer,
+  Status,
+} from './../models/bank.models';
 import { Customer } from '../models/bank.models';
-import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { of, pipe, switchMap, tap } from 'rxjs';
 import { BankApiService } from '../services/bank.api.service';
-import { inject } from '@angular/core';
+import { computed, inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 
 interface BankState {
-  customers: Customer[];
+  customers: CustomerWithAccount[];
   isLoading: boolean;
-  selectedCustomer: Customer | null;
-  accountInformation: Account | null;
+  selectedCustomer: CustomerWithAccount | null;
 }
 
 const initialState: BankState = {
   customers: [],
   isLoading: false,
   selectedCustomer: null,
-  accountInformation: null,
 };
 
 export const BankStore = signalStore(
   withState(initialState),
+  withComputed((store) => ({
+    accoutInfo: computed(() => store.selectedCustomer()?.account),
+  })),
   withMethods((store, bankService = inject(BankApiService)) => ({
     loadCustomers: rxMethod<void>(
       pipe(
@@ -60,26 +67,6 @@ export const BankStore = signalStore(
         }),
       ),
     ),
-    checkAccountInformation: rxMethod<string>(
-      pipe(
-        tap(() => patchState(store, { isLoading: true })),
-        switchMap((customerId) => {
-          return bankService.checkAccountInformation(customerId).pipe(
-            tapResponse({
-              next: (account) =>
-                patchState(store, {
-                  accountInformation: account,
-                  isLoading: false,
-                }),
-              error: (err) => {
-                patchState(store, { isLoading: false });
-                console.error(err);
-              },
-            }),
-          );
-        }),
-      ),
-    ),
     createAccount: rxMethod<Status>(
       pipe(
         tap(() => patchState(store, { isLoading: true })),
@@ -99,9 +86,20 @@ export const BankStore = signalStore(
 
           return bankService.createAccount(newAccount).pipe(
             tapResponse({
-              next: (account) =>
+              next: (customerUpdated) =>
                 patchState(store, {
-                  accountInformation: account,
+                  customers: [
+                    ...store.customers().map((customer) =>
+                      customer.id === customerUpdated.id
+                        ? {
+                            ...customer,
+                            account: customerUpdated.account,
+                            hasAccount: customerUpdated.hasAccount,
+                          }
+                        : customer,
+                    ),
+                  ],
+                  selectedCustomer: customerUpdated,
                   isLoading: false,
                 }),
               error: (err) => {

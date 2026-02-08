@@ -9,5 +9,6 @@ import lombok.Setter;
 public class CreateCustomerDTO {
     private DocumentTypeEnum documentType;
     private String documentNumber;
+    private String fullName;
     private String email;
 }

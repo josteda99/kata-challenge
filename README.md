@@ -36,3 +36,17 @@
 * initial backend✅
 * create endpoints✅
 * conect with database✅
+* adjust front with real petitions✅
+* show real information ✅
+* persist info✅
+
+tomorrow
+* add validator front/back
+* adjust layout
+* styles
+* unit test
+* loading
+* e2e???
+* think what is the best option to load info
+* add reset DB button
+* add initialize with mock data

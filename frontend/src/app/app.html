@@ -29,7 +29,8 @@
     <ul>
       @for (customer of customers(); track customer.id) {
         <li (click)="selectCustomer(customer.id)">
-          {{ customer.id }} - {{ customer.fullName }} - {{ customer.email }}
+          {{ customer.id }} - {{ customer.fullName }} - {{ customer.email }} -
+          {{ customer.hasAccount }}
         </li>
       }
     </ul>
@@ -40,11 +41,11 @@
       <p>id: {{ selectedCustomer()?.documentType }} - {{ selectedCustomer()?.id }}</p>
       <p>name: {{ selectedCustomer()?.fullName }}</p>
       <p>email: {{ selectedCustomer()?.email }}</p>
-      @if (accountInformation()) {
+      @if (accountInfo()) {
         <h3 class="mt-4">account information</h3>
-        <p>id: {{ accountInformation()?.id }}</p>
-        <p>account number: {{ accountInformation()?.accountNumber }}</p>
-        <p>status: {{ accountInformation()?.status }}</p>
+        <p>id: {{ accountInfo()?.id }}</p>
+        <p>account number: {{ accountInfo()?.accountNumber }}</p>
+        <p>status: {{ accountInfo()?.status }}</p>
       } @else {
         <form
           class="flex flex-col m-5 gap-3"

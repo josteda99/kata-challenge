@@ -18,7 +18,7 @@ export class App implements OnInit {
   public customers = this._store.customers;
   public isLoading = this._store.isLoading;
   public selectedCustomer = this._store.selectedCustomer;
-  public accountInformation = this._store.accountInformation;
+  public accountInfo = this._store.accoutInfo;
 
   public customerForm = this.fb.nonNullable.group({
     documentType: [<DocType>'CC'],

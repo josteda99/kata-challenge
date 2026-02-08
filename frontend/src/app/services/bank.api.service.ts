@@ -1,43 +1,36 @@
-import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
-import { Account, Customer, NewAccount, NewCustomer } from '../models/bank.models';
+import { inject, Injectable } from '@angular/core';
+import {
+  Account,
+  Customer,
+  CustomerWithAccount,
+  NewAccount,
+  NewCustomer,
+} from '../models/bank.models';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BankApiService {
+  private http = inject(HttpClient);
+  private baseUrl = environment.apiUrl;
+
   public loadCustomers() {
-    return of<Customer[]>([
-      {
-        id: '1',
-        documentType: 'CC',
-        documentNumber: '1',
-        fullName: 'johan',
-        email: 'josteda99@gmail.com',
-      },
-    ]);
+    return this.http.get<CustomerWithAccount[]>(`${this.baseUrl}/customers`);
   }
 
   public createCustomer(newCustomer: NewCustomer) {
-    return of<Customer>({
-      id: crypto.randomUUID(),
-      documentType: newCustomer.documentType,
-      documentNumber: newCustomer.documentNumber,
-      fullName: newCustomer.fullName,
-      email: newCustomer.email,
-    });
+    return this.http.post<CustomerWithAccount>(`${this.baseUrl}/customers`, newCustomer);
   }
 
   public checkAccountInformation(customerId: string) {
-    return of<Account | null>(null);
+    return this.http.get<CustomerWithAccount | null>(
+      `${this.baseUrl}/accounts/customer/${customerId}`,
+    );
   }
 
   public createAccount(newAccount: NewAccount) {
-    return of<Account>({
-      id: crypto.randomUUID(),
-      customerId: newAccount.customerId,
-      accountNumber: crypto.randomUUID(),
-      status: newAccount.status,
-    });
+    return this.http.post<CustomerWithAccount>(`${this.baseUrl}/accounts`, newAccount);
   }
 }

@@ -27,3 +27,13 @@ export interface NewAccount {
   customerId: string;
   status: Status;
 }
+
+export interface CustomerWithAccount {
+  id: string;
+  documentType: DocType;
+  documentNumber: string;
+  fullName: string;
+  email: string;
+  hasAccount: boolean;
+  account?: Account;
+}
