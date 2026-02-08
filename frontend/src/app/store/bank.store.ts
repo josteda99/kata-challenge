@@ -28,7 +28,7 @@ const initialState: BankState = {
 export const BankStore = signalStore(
   withState(initialState),
   withComputed((store) => ({
-    accoutInfo: computed(() => store.selectedCustomer()?.account),
+    accoutInfo: computed(() => store.selectedCustomer()?.account ?? null),
   })),
   withMethods((store, bankService = inject(BankApiService)) => ({
     loadCustomers: rxMethod<void>(

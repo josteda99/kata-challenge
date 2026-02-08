@@ -1,0 +1,37 @@
+<mat-card appearance="outlined">
+  <mat-card-header>
+    <mat-card-title> Create customer</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form class="mt-5" action="submit" [formGroup]="customerForm()" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Select me</mat-label>
+        <mat-select formControlName="documentType">
+          <mat-option value="CC">CC</mat-option>
+          <mat-option value="CE">CE</mat-option>
+          <mat-option value="PAS">PAS</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Enter document number</mat-label>
+        <input matInput formControlName="documentNumber" />
+      </mat-form-field>
+
+      <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Enter full name</mat-label>
+        <input matInput formControlName="fullName" />
+      </mat-form-field>
+
+      <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Enter your email</mat-label>
+        <input matInput placeholder="pat@example.com" formControlName="email" required />
+        @if (customerForm().get('email')?.invalid && customerForm().get('email')?.touched) {
+          <mat-error>email is required</mat-error>
+        }
+      </mat-form-field>
+
+      <button matButton="filled" type="submit">Create customer</button>
+    </form>
+  </mat-card-content>
+</mat-card>

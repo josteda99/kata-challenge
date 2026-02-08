@@ -1,25 +1,17 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { BankStore } from './store/bank.store';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { DocType, NewCustomer, Status } from './models/bank.models';
-import { MatSelectModule } from '@angular/material/select';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatTableModule } from '@angular/material/table';
-import { MatListModule } from '@angular/material/list';
+import { CustomerFormComponent } from './components/customer-form/customer-form.component';
+import { SelectedCustomerCardComponent } from './components/selected-customer-card/selected-customer-card.component';
+import { CustomersTableComponent } from './components/customers-table/customers-table.component';
 @Component({
   selector: 'app-root',
   imports: [
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatCardModule,
-    MatButtonModule,
-    MatTableModule,
-    MatListModule,
+    CustomerFormComponent,
+    SelectedCustomerCardComponent,
+    CustomersTableComponent,
   ],
   providers: [BankStore],
   templateUrl: './app.html',

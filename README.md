@@ -42,11 +42,11 @@
 
 tomorrow
 * add validator front/back
-* adjust layout
-* styles
+* adjust layout✅
+* styles✅
 * unit test
 * loading
 * e2e???
-* think what is the best option to load info
+* think what is the best option to load info✅
 * add reset DB button
 * add initialize with mock data
