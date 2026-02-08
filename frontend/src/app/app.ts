@@ -5,6 +5,8 @@ import { DocType, NewCustomer, Status } from './models/bank.models';
 import { CustomerFormComponent } from './components/customer-form/customer-form.component';
 import { SelectedCustomerCardComponent } from './components/selected-customer-card/selected-customer-card.component';
 import { CustomersTableComponent } from './components/customers-table/customers-table.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @Component({
   selector: 'app-root',
   imports: [
@@ -12,6 +14,7 @@ import { CustomersTableComponent } from './components/customers-table/customers-
     CustomerFormComponent,
     SelectedCustomerCardComponent,
     CustomersTableComponent,
+    MatProgressSpinnerModule,
   ],
   providers: [BankStore],
   templateUrl: './app.html',
@@ -20,6 +23,7 @@ import { CustomersTableComponent } from './components/customers-table/customers-
 export class App implements OnInit {
   private readonly _store = inject(BankStore);
   private fb = inject(FormBuilder);
+  private _snackBar = inject(MatSnackBar);
 
   public customers = this._store.customers;
   public isLoading = this._store.isLoading;
@@ -30,9 +34,12 @@ export class App implements OnInit {
 
   public customerForm = this.fb.nonNullable.group({
     documentType: [<DocType>'CC'],
-    documentNumber: ['', Validators.required],
+    documentNumber: [
+      '',
+      [Validators.required, Validators.pattern('^[0-9]+$'), Validators.minLength(6)],
+    ],
     fullName: [''],
-    email: ['', [Validators.required, Validators.email]],
+    email: ['', [Validators.required, Validators.email, Validators.maxLength(150)]],
   });
 
   public accountForm = this.fb.nonNullable.group({
@@ -46,6 +53,11 @@ export class App implements OnInit {
   public createCustomer() {
     const customerForm = this.customerForm;
 
+    if (customerForm.invalid || customerForm.pristine) {
+      this._snackBar.open('Form is invalid', '', { duration: 3000 });
+      return;
+    }
+
     const newCustomer: NewCustomer = {
       documentType: customerForm.controls.documentType.value,
       documentNumber: customerForm.controls.documentNumber.value,
@@ -54,6 +66,7 @@ export class App implements OnInit {
     };
 
     this._store.createCustomer(newCustomer);
+    this.customerForm.reset({ documentType: 'CC', documentNumber: '', fullName: '', email: '' });
   }
 
   public selectCustomer(customerId: string) {

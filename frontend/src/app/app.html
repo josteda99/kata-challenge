@@ -1,34 +1,33 @@
-@if (isLoading()) {
-  <p>Loading...</p>
-} @else {
-  <div class="m-5">
+<div class="m-5">
+  <div class="flex gap-5">
     <h1 class="text-2xl mb-5">Bank</h1>
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-5">
-      <div class="sm:col-span-12 md:col-span-6">
-        <app-customer-form
-          [customerForm]="customerForm"
-          (create)="createCustomer()"
-        ></app-customer-form>
-      </div>
+    @if (isLoading()) {
+      <mat-spinner diameter="30"></mat-spinner>
+    }
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-12 gap-5">
+    <div class="sm:col-span-12 md:col-span-6">
+      <app-customer-form
+        [customerForm]="customerForm"
+        (create)="createCustomer()"
+      ></app-customer-form>
+    </div>
 
-      <div class="sm:col-span-12 md:col-span-6">
-        <app-selected-customer-card
-          [accountForm]="accountForm"
-          [selectedCustomer]="selectedCustomer()"
-          [accountInfo]="accountInfo()"
-          (create)="createAccount()"
-        ></app-selected-customer-card>
-      </div>
+    <div class="sm:col-span-12 md:col-span-6">
+      <app-selected-customer-card
+        [accountForm]="accountForm"
+        [selectedCustomer]="selectedCustomer()"
+        [accountInfo]="accountInfo()"
+        (create)="createAccount()"
+      ></app-selected-customer-card>
+    </div>
 
-      <div class="sm:col-span-12 md:col-span-12">
-        <app-customers-table
-          [customers]="customers()"
-          [columns]="columns()"
-          (select)="selectCustomer($event)"
-        ></app-customers-table>
-      </div>
+    <div class="sm:col-span-12 md:col-span-12">
+      <app-customers-table
+        [customers]="customers()"
+        [columns]="columns()"
+        (select)="selectCustomer($event)"
+      ></app-customers-table>
     </div>
   </div>
-}
-
-<!-- //user snackbar to display sucess and error -->
+</div>
