@@ -1,110 +1,144 @@
 @if (isLoading()) {
   <p>Loading...</p>
 } @else {
-  <div class="continer m-5">
-    <h1>Bank</h1>
+  <div class="m-5">
+    <h1 class="text-2xl mb-5">Bank</h1>
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-5">
+      <div class="sm:col-span-12 md:col-span-3">
+        <mat-card appearance="outlined">
+          <mat-card-header>
+            <mat-card-title> Create customer</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <form
+              class="mt-5"
+              action="submit"
+              [formGroup]="customerForm"
+              (ngSubmit)="createCustomer()"
+            >
+              <mat-form-field class="w-full">
+                <mat-label>Select me</mat-label>
+                <mat-select formControlName="documentType">
+                  <mat-option value="CC">CC</mat-option>
+                  <mat-option value="CE">CE</mat-option>
+                  <mat-option value="PAS">PAS</mat-option>
+                </mat-select>
+              </mat-form-field>
 
-    <mat-card appearance="outlined">
-      <mat-card-header>
-        <mat-card-title> Create customer</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <form
-          class="flex flex-col m-5 gap-3"
-          action="submit"
-          [formGroup]="customerForm"
-          (ngSubmit)="createCustomer()"
-        >
-          <mat-form-field>
-            <mat-label>Select me</mat-label>
-            <mat-select formControlName="documentType">
-              <mat-option value="CC">CC</mat-option>
-              <mat-option value="CE">CE</mat-option>
-              <mat-option value="PAS">PAS</mat-option>
-            </mat-select>
-          </mat-form-field>
+              <mat-form-field class="w-full" appearance="fill">
+                <mat-label>Enter document number</mat-label>
+                <input matInput formControlName="documentNumber" />
+              </mat-form-field>
 
-          <mat-form-field appearance="fill">
-            <mat-label>Enter document number</mat-label>
-            <input matInput formControlName="documentNumber" />
-          </mat-form-field>
+              <mat-form-field class="w-full" appearance="fill">
+                <mat-label>Enter full name</mat-label>
+                <input matInput formControlName="fullName" />
+              </mat-form-field>
 
-          <mat-form-field appearance="fill">
-            <mat-label>Enter full name</mat-label>
-            <input matInput formControlName="fullName" />
-          </mat-form-field>
+              <mat-form-field class="w-full" appearance="fill">
+                <mat-label>Enter your email</mat-label>
+                <input matInput placeholder="pat@example.com" formControlName="email" required />
+                @if (customerForm.controls.email.invalid && customerForm.controls.email.touched) {
+                  <mat-error>email is required</mat-error>
+                }
+              </mat-form-field>
 
-          <mat-form-field appearance="fill">
-            <mat-label>Enter your email</mat-label>
-            <input matInput placeholder="pat@example.com" formControlName="email" required />
-            @if (customerForm.controls.email.invalid && customerForm.controls.email.touched) {
-              <mat-error>email is required</mat-error>
+              <button matButton="filled" type="submit">Create customer</button>
+            </form>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="sm:col-span-12 md:col-span-9">
+        <mat-card appearance="outlined">
+          <mat-card-header>
+            <mat-card-title>Customers</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="table-wrapper">
+              <table mat-table [dataSource]="customers()" class="mat-elevation-z8">
+                <ng-container matColumnDef="No">
+                  <th mat-header-cell *matHeaderCellDef>No.</th>
+                  <td mat-cell *matCellDef="let customer; let i = index">
+                    {{ i + 1 }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="fullName">
+                  <th mat-header-cell *matHeaderCellDef>Full Name</th>
+                  <td mat-cell *matCellDef="let customer">{{ customer.fullName }}</td>
+                </ng-container>
+                <ng-container matColumnDef="email">
+                  <th mat-header-cell *matHeaderCellDef>Email</th>
+                  <td mat-cell *matCellDef="let customer">{{ customer.email }}</td>
+                </ng-container>
+                <ng-container matColumnDef="hasAccount">
+                  <th mat-header-cell *matHeaderCellDef>hasAccount</th>
+                  <td mat-cell *matCellDef="let customer">{{ customer.hasAccount }}</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="columns()"></tr>
+                <tr
+                  mat-row
+                  *matRowDef="let customer; columns: columns()"
+                  (click)="selectCustomer(customer.id)"
+                  style="cursor: pointer"
+                ></tr>
+              </table>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="sm:col-span-12 md:col-span-3">
+        <mat-card appearance="outlined">
+          <mat-card-header>
+            <mat-card-title>Selected User</mat-card-title>
+            @if (!selectedCustomer()) {
+              <mat-card-subtitle>no selected user yet</mat-card-subtitle>
             }
-          </mat-form-field>
+          </mat-card-header>
+          <mat-card-content>
+            @if (selectedCustomer()) {
+              <mat-list>
+                <mat-list-item
+                  >id: {{ selectedCustomer()?.documentType }} -
+                  {{ selectedCustomer()?.documentNumber }}</mat-list-item
+                >
+                <mat-list-item>name: {{ selectedCustomer()?.fullName }}</mat-list-item>
+                <mat-list-item>email: {{ selectedCustomer()?.email }}</mat-list-item>
+              </mat-list>
+            }
+            @if (accountInfo()) {
+              <h2>Account Information</h2>
+              <mat-list>
+                <mat-list-item>account number: {{ accountInfo()?.accountNumber }}</mat-list-item>
+                <mat-list-item>status: {{ accountInfo()?.status }}</mat-list-item>
+              </mat-list>
+            } @else {
+              <h2>Create Account</h2>
 
-          <button matButton type="submit">Create customer</button>
-        </form>
-      </mat-card-content>
-    </mat-card>
+              <form
+                class="mt-5"
+                action="submit"
+                [formGroup]="accountForm"
+                (ngSubmit)="createAccount()"
+              >
+                <mat-form-field class="w-full">
+                  <mat-label>Status</mat-label>
+                  <mat-select formControlName="status">
+                    <mat-option value="ACTIVE">ACTIVE</mat-option>
+                    <mat-option value="INACTIVE">INACTIVE</mat-option>
+                  </mat-select>
+                </mat-form-field>
 
-    <h2 class="mt-5">Customer List</h2>
-
-    <table mat-table [dataSource]="customers()" class="mat-elevation-z8">
-      <ng-container matColumnDef="No">
-        <th mat-header-cell *matHeaderCellDef>No.</th>
-        <td mat-cell *matCellDef="let customer; let i = index">
-          {{ i + 1 }}
-        </td>
-      </ng-container>
-      <ng-container matColumnDef="fullName">
-        <th mat-header-cell *matHeaderCellDef>Full Name</th>
-        <td mat-cell *matCellDef="let customer">{{ customer.fullName }}</td>
-      </ng-container>
-      <ng-container matColumnDef="email">
-        <th mat-header-cell *matHeaderCellDef>Email</th>
-        <td mat-cell *matCellDef="let customer">{{ customer.email }}</td>
-      </ng-container>
-      <ng-container matColumnDef="hasAccount">
-        <th mat-header-cell *matHeaderCellDef>hasAccount</th>
-        <td mat-cell *matCellDef="let customer">{{ customer.hasAccount }}</td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="columns()"></tr>
-      <tr
-        mat-row
-        *matRowDef="let customer; columns: columns()"
-        (click)="selectCustomer(customer.id)"
-        style="cursor: pointer"
-      ></tr>
-    </table>
-
-    <h2 class="mt-5">Selected User</h2>
-
-    @if (selectedCustomer()) {
-      <p>id: {{ selectedCustomer()?.documentType }} - {{ selectedCustomer()?.id }}</p>
-      <p>name: {{ selectedCustomer()?.fullName }}</p>
-      <p>email: {{ selectedCustomer()?.email }}</p>
-      @if (accountInfo()) {
-        <h3 class="mt-4">account information</h3>
-        <p>id: {{ accountInfo()?.id }}</p>
-        <p>account number: {{ accountInfo()?.accountNumber }}</p>
-        <p>status: {{ accountInfo()?.status }}</p>
-      } @else {
-        <form
-          class="flex flex-col m-5 gap-3"
-          action="submit"
-          [formGroup]="accountForm"
-          (ngSubmit)="createAccount()"
-        >
-          <select formControlName="status">
-            <option value="ACTIVE">ACTIVE</option>
-            <option value="INACTIVE">INACTIVE</option>
-          </select>
-          <button type="submit">Create account</button>
-        </form>
-      }
-    } @else {
-      <p>no selected user yet</p>
-    }
+                <button matButton="filled" type="submit">Create account</button>
+              </form>
+            }
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
   </div>
 }
+
+<!-- //user snackbar to display sucess and error -->

@@ -8,6 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
+import { MatListModule } from '@angular/material/list';
 @Component({
   selector: 'app-root',
   imports: [
@@ -18,6 +19,7 @@ import { MatTableModule } from '@angular/material/table';
     MatCardModule,
     MatButtonModule,
     MatTableModule,
+    MatListModule,
   ],
   providers: [BankStore],
   templateUrl: './app.html',
