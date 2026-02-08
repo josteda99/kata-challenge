@@ -34,7 +34,7 @@ export class App implements OnInit {
   public selectedCustomer = this._store.selectedCustomer;
   public accountInfo = this._store.accoutInfo;
 
-  public columns = signal(['No', 'fullName', 'email', 'hasAccount']);
+  public columns = signal(['No', 'document', 'fullName', 'email', 'hasAccount']);
 
   public customerForm = this.fb.nonNullable.group({
     documentType: [<DocType>'CC'],

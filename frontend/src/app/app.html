@@ -4,7 +4,7 @@
   <div class="m-5">
     <h1 class="text-2xl mb-5">Bank</h1>
     <div class="grid grid-cols-1 md:grid-cols-12 gap-5">
-      <div class="sm:col-span-12 md:col-span-3">
+      <div class="sm:col-span-12 md:col-span-6">
         <mat-card appearance="outlined">
           <mat-card-header>
             <mat-card-title> Create customer</mat-card-title>
@@ -49,47 +49,7 @@
         </mat-card>
       </div>
 
-      <div class="sm:col-span-12 md:col-span-9">
-        <mat-card appearance="outlined">
-          <mat-card-header>
-            <mat-card-title>Customers</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <div class="table-wrapper">
-              <table mat-table [dataSource]="customers()" class="mat-elevation-z8">
-                <ng-container matColumnDef="No">
-                  <th mat-header-cell *matHeaderCellDef>No.</th>
-                  <td mat-cell *matCellDef="let customer; let i = index">
-                    {{ i + 1 }}
-                  </td>
-                </ng-container>
-                <ng-container matColumnDef="fullName">
-                  <th mat-header-cell *matHeaderCellDef>Full Name</th>
-                  <td mat-cell *matCellDef="let customer">{{ customer.fullName }}</td>
-                </ng-container>
-                <ng-container matColumnDef="email">
-                  <th mat-header-cell *matHeaderCellDef>Email</th>
-                  <td mat-cell *matCellDef="let customer">{{ customer.email }}</td>
-                </ng-container>
-                <ng-container matColumnDef="hasAccount">
-                  <th mat-header-cell *matHeaderCellDef>hasAccount</th>
-                  <td mat-cell *matCellDef="let customer">{{ customer.hasAccount }}</td>
-                </ng-container>
-
-                <tr mat-header-row *matHeaderRowDef="columns()"></tr>
-                <tr
-                  mat-row
-                  *matRowDef="let customer; columns: columns()"
-                  (click)="selectCustomer(customer.id)"
-                  style="cursor: pointer"
-                ></tr>
-              </table>
-            </div>
-          </mat-card-content>
-        </mat-card>
-      </div>
-
-      <div class="sm:col-span-12 md:col-span-3">
+      <div class="sm:col-span-12 md:col-span-6">
         <mat-card appearance="outlined">
           <mat-card-header>
             <mat-card-title>Selected User</mat-card-title>
@@ -101,21 +61,21 @@
             @if (selectedCustomer()) {
               <mat-list>
                 <mat-list-item
-                  >id: {{ selectedCustomer()?.documentType }} -
-                  {{ selectedCustomer()?.documentNumber }}</mat-list-item
-                >
-                <mat-list-item>name: {{ selectedCustomer()?.fullName }}</mat-list-item>
-                <mat-list-item>email: {{ selectedCustomer()?.email }}</mat-list-item>
+                  >Id: {{ selectedCustomer()?.documentType }} -
+                  {{ selectedCustomer()?.documentNumber }}
+                </mat-list-item>
+                <mat-list-item>Name: {{ selectedCustomer()?.fullName }}</mat-list-item>
+                <mat-list-item>Email: {{ selectedCustomer()?.email }}</mat-list-item>
               </mat-list>
             }
             @if (accountInfo()) {
-              <h2>Account Information</h2>
+              <h2 class="text-xl">Account Information</h2>
               <mat-list>
-                <mat-list-item>account number: {{ accountInfo()?.accountNumber }}</mat-list-item>
-                <mat-list-item>status: {{ accountInfo()?.status }}</mat-list-item>
+                <mat-list-item>Account number: {{ accountInfo()?.accountNumber }} </mat-list-item>
+                <mat-list-item>Status: {{ accountInfo()?.status }}</mat-list-item>
               </mat-list>
             } @else {
-              <h2>Create Account</h2>
+              <h2 class="text-xl">Create Account</h2>
 
               <form
                 class="mt-5"
@@ -134,6 +94,60 @@
                 <button matButton="filled" type="submit">Create account</button>
               </form>
             }
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="sm:col-span-12 md:col-span-12">
+        <mat-card appearance="outlined">
+          <mat-card-header>
+            <mat-card-title>Customers</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="table-wrapper">
+              <table mat-table [dataSource]="customers()" class="mat-elevation-z8">
+                <ng-container matColumnDef="No">
+                  <th mat-header-cell *matHeaderCellDef>No.</th>
+                  <td mat-cell *matCellDef="let customer; let i = index">
+                    {{ i + 1 }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="document">
+                  <th mat-header-cell *matHeaderCellDef>Document</th>
+                  <td mat-cell *matCellDef="let customer">
+                    {{
+                      `${customer.documentType} ${customer.documentNumber ? customer.documentNumber : '-'}`
+                    }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="fullName">
+                  <th mat-header-cell *matHeaderCellDef>Full Name</th>
+                  <td mat-cell *matCellDef="let customer">
+                    {{ customer.fullName ? customer.fullName : '-' }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="email">
+                  <th mat-header-cell *matHeaderCellDef>Email</th>
+                  <td mat-cell *matCellDef="let customer">
+                    {{ customer.email ? customer.email : '-' }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="hasAccount">
+                  <th mat-header-cell *matHeaderCellDef>Has Account</th>
+                  <td mat-cell *matCellDef="let customer">
+                    {{ customer.hasAccount ? '🟢' : '🔴' }}
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="columns()"></tr>
+                <tr
+                  mat-row
+                  *matRowDef="let customer; columns: columns()"
+                  (click)="selectCustomer(customer.id)"
+                  style="cursor: pointer"
+                ></tr>
+              </table>
+            </div>
           </mat-card-content>
         </mat-card>
       </div>
