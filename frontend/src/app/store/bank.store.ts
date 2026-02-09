@@ -1,11 +1,4 @@
-import {
-  Account,
-  CustomerWithAccount,
-  NewAccount,
-  NewCustomer,
-  Status,
-} from './../models/bank.models';
-import { Customer } from '../models/bank.models';
+import { CustomerWithAccount, NewAccount, NewCustomer, Status } from './../models/bank.models';
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { of, pipe, switchMap, tap } from 'rxjs';

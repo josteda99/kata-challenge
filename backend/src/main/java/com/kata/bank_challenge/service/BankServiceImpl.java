@@ -5,6 +5,8 @@ import com.kata.bank_challenge.entity.Account;
 import com.kata.bank_challenge.entity.Customer;
 import com.kata.bank_challenge.repository.AccountRepository;
 import com.kata.bank_challenge.repository.CustomerRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,40 +24,47 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public List<CustomerWithAccountDto> getAllCustomers() {
-        return customerRepository.findAllWithAccount().stream().map(r -> new CustomerWithAccountDto(
+    public ResponseEntity<List<CustomerWithAccountDto>> getAllCustomers() {
+        return ResponseEntity.status(HttpStatus.OK).body(customerRepository.findAllWithAccount().stream().map(r -> new CustomerWithAccountDto(
                         (Customer) r[0],
                         (Account) r[1]
                 ))
-                .toList();
+                .toList());
     }
 
     @Override
-    public CustomerWithAccountDto createCustomer(CreateCustomerDTO customerDto) {
+    public ResponseEntity<CustomerWithAccountDto> createCustomer(CreateCustomerDTO customerDto) {
+        Customer checkedCustomer = customerRepository.findByDocumentNumber(customerDto.getDocumentNumber()).orElse(null);
+
+        if (checkedCustomer != null) return ResponseEntity.status(HttpStatus.CONFLICT).build();
+
         Customer customer = new Customer(customerDto.getDocumentType(), customerDto.getDocumentNumber(), customerDto.getEmail(), customerDto.getFullName());
         Customer newCustomer = customerRepository.save(customer);
-        return new CustomerWithAccountDto(newCustomer, null);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new CustomerWithAccountDto(newCustomer, null));
     }
 
     @Override
-    public CustomerWithAccountDto createAccount(CreateAccountDTO account) {
-        Customer customer = customerRepository.findById(account.getCustomerId()).orElseThrow();
-        Account temporalAccount = new Account(account, customer);
-        //check if already has a custoomer linked
-        Account newAccount = accountRepository.save(temporalAccount);
-        return new CustomerWithAccountDto(customer,newAccount);
-    }
-
-    @Override
-    public List<AccountDto> getAllAccounts() {
-        return accountRepository.findAll().stream()
+    public ResponseEntity<List<AccountDto>> getAllAccounts() {
+        return ResponseEntity.status(HttpStatus.OK).body(accountRepository.findAll().stream()
                 .map(AccountDto::new)
-                .toList();
+                .toList());
     }
 
     @Override
-    public Optional<AccountDto> getAccountByCustomerId(UUID accountId) {
-        return accountRepository.findByCustomerId(accountId)
-                .map(AccountDto::new);
+    public ResponseEntity<CustomerWithAccountDto> createAccount(CreateAccountDTO account) {
+        Customer customer = customerRepository.findById(account.getCustomerId()).orElseThrow();
+        Account checkedAccount = accountRepository.findByCustomerId(account.getCustomerId()).orElse(null);
+
+        if (checkedAccount != null) return ResponseEntity.status(HttpStatus.CONFLICT).build();;
+
+        Account temporalAccount = new Account(account, customer);
+        Account newAccount = accountRepository.save(temporalAccount);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new CustomerWithAccountDto(customer, newAccount));
+    }
+
+    @Override
+    public ResponseEntity<Optional<AccountDto>> getAccountByCustomerId(UUID accountId) {
+        return ResponseEntity.status(HttpStatus.OK).body(accountRepository.findByCustomerId(accountId)
+                .map(AccountDto::new));
     }
 }

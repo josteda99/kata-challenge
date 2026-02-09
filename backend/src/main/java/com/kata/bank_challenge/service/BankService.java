@@ -1,19 +1,20 @@
 package com.kata.bank_challenge.service;
 
 import com.kata.bank_challenge.dto.*;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public interface BankService {
-    List<CustomerWithAccountDto> getAllCustomers();
+    ResponseEntity<List<CustomerWithAccountDto>> getAllCustomers();
 
-    CustomerWithAccountDto createCustomer(CreateCustomerDTO customer);
+    ResponseEntity<CustomerWithAccountDto> createCustomer(CreateCustomerDTO customer);
 
-    CustomerWithAccountDto createAccount(CreateAccountDTO account);
+    ResponseEntity<CustomerWithAccountDto> createAccount(CreateAccountDTO account);
 
-    List<AccountDto> getAllAccounts();
+    ResponseEntity<List<AccountDto>> getAllAccounts();
 
-    Optional<AccountDto> getAccountByCustomerId(UUID accountId);
+    ResponseEntity<Optional<AccountDto>> getAccountByCustomerId(UUID accountId);
 }

@@ -5,6 +5,7 @@ import com.kata.bank_challenge.dto.CreateAccountDTO;
 import com.kata.bank_challenge.dto.CustomerWithAccountDto;
 import com.kata.bank_challenge.service.BankService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,18 +20,18 @@ public class AccountController {
     private BankService service;
 
     @PostMapping
-    public CustomerWithAccountDto createCustomer(@RequestBody CreateAccountDTO accountDto) {
+    public ResponseEntity<CustomerWithAccountDto> createCustomer(@RequestBody CreateAccountDTO accountDto) {
         return service.createAccount(accountDto);
     }
 
     @GetMapping
-    public List<AccountDto> getAccounts() {
+    public ResponseEntity<List<AccountDto>> getAccounts() {
         return service.getAllAccounts();
     }
 
 
     @GetMapping("/customer/{customerId}")
-    public Optional<AccountDto> getAccountByCustomerId(
+    public ResponseEntity<Optional<AccountDto>> getAccountByCustomerId(
             @PathVariable UUID customerId) {
         return service.getAccountByCustomerId(customerId);
     }

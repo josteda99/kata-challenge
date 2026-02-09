@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { BankStore } from './store/bank.store';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DocType, NewCustomer, Status } from './models/bank.models';
@@ -7,6 +7,7 @@ import { SelectedCustomerCardComponent } from './components/selected-customer-ca
 import { CustomersTableComponent } from './components/customers-table/customers-table.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ErrorStore } from './store/error.store';
 @Component({
   selector: 'app-root',
   imports: [
@@ -24,6 +25,7 @@ export class App implements OnInit {
   private readonly _store = inject(BankStore);
   private fb = inject(FormBuilder);
   private _snackBar = inject(MatSnackBar);
+  private _errorStore = inject(ErrorStore);
 
   public customers = this._store.customers;
   public isLoading = this._store.isLoading;
@@ -48,6 +50,17 @@ export class App implements OnInit {
 
   ngOnInit() {
     this._store.loadCustomers();
+  }
+
+  constructor() {
+    effect(() => {
+      const error = this._errorStore.error();
+
+      if (error) {
+        this._snackBar.open(error, 'Close', { duration: 3000 });
+        this._errorStore.clearError();
+      }
+    });
   }
 
   public createCustomer() {
