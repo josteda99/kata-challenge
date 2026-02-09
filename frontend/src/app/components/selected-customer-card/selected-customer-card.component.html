@@ -9,35 +9,34 @@
     @if (selectedCustomer()) {
       <mat-list>
         <mat-list-item
-          >Id: {{ selectedCustomer()?.documentType }} -
-          {{ selectedCustomer()?.documentNumber }}
+          >Id: {{ selectedCustomer()?.documentType }} {{ selectedCustomer()?.documentNumber }}
         </mat-list-item>
         <mat-list-item>Name: {{ selectedCustomer()?.fullName }}</mat-list-item>
         <mat-list-item>Email: {{ selectedCustomer()?.email }}</mat-list-item>
       </mat-list>
     }
     @if (accountInfo()) {
-      <h2 class="text-xl">Account Information</h2>
+      <mat-divider></mat-divider>
+      <h2 class="text-xl mt-5">Account Information</h2>
       <mat-list>
         <mat-list-item>Account number: {{ accountInfo()?.accountNumber }} </mat-list-item>
         <mat-list-item>Status: {{ accountInfo()?.status }}</mat-list-item>
       </mat-list>
-    } @else {
-      @if (selectedCustomer()) {
-        <h2 class="text-xl">Create Account</h2>
+    } @else if (selectedCustomer()) {
+      <mat-divider></mat-divider>
+      <h2 class="text-xl mt-5">Create Account</h2>
 
-        <form class="mt-5" action="submit" [formGroup]="accountForm()" (ngSubmit)="onSubmit()">
-          <mat-form-field appearance="outline" class="w-full">
-            <mat-label>Status</mat-label>
-            <mat-select formControlName="status">
-              <mat-option value="ACTIVE">ACTIVE</mat-option>
-              <mat-option value="INACTIVE">INACTIVE</mat-option>
-            </mat-select>
-          </mat-form-field>
+      <form class="mt-5" action="submit" [formGroup]="accountForm()" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Status</mat-label>
+          <mat-select formControlName="status">
+            <mat-option value="ACTIVE">ACTIVE</mat-option>
+            <mat-option value="INACTIVE">INACTIVE</mat-option>
+          </mat-select>
+        </mat-form-field>
 
-          <button matButton="filled" type="submit">Create account</button>
-        </form>
-      }
+        <button matButton="filled" type="submit">Create account</button>
+      </form>
     }
   </mat-card-content>
 </mat-card>

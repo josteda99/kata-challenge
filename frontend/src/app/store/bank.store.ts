@@ -11,6 +11,7 @@ interface BankState {
   isLoading: boolean;
   selectedCustomer: CustomerWithAccount | null;
   createCustomerSuccess: boolean;
+  createAccountSuccess: boolean;
 }
 
 const initialState: BankState = {
@@ -18,6 +19,7 @@ const initialState: BankState = {
   isLoading: false,
   selectedCustomer: null,
   createCustomerSuccess: false,
+  createAccountSuccess: false,
 };
 
 export const BankStore = signalStore(
@@ -96,6 +98,7 @@ export const BankStore = signalStore(
                     ),
                   ],
                   selectedCustomer: customerUpdated,
+                  createAccountSuccess: true,
                   isLoading: false,
                 }),
               error: (err) => {
@@ -115,6 +118,11 @@ export const BankStore = signalStore(
     resetCustomerCreation(): void {
       patchState(store, {
         createCustomerSuccess: false,
+      });
+    },
+    resetAccountCreation(): void {
+      patchState(store, {
+        createAccountSuccess: false,
       });
     },
   })),

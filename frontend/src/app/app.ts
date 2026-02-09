@@ -72,6 +72,14 @@ export class App implements OnInit {
         this._store.resetCustomerCreation();
       }
     });
+
+    effect(() => {
+      const data = this._store.createAccountSuccess();
+      if (data) {
+        this._snackBar.open('Account created succesfully', 'Close', { duration: 3000 });
+        this._store.resetAccountCreation();
+      }
+    });
   }
 
   public createCustomer() {
