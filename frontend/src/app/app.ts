@@ -61,6 +61,17 @@ export class App implements OnInit {
         this._errorStore.clearError();
       }
     });
+
+    effect(() => {
+      const data = this._store.createCustomerSuccess();
+      if (data) {
+        this._snackBar.open('Customer created succesfully', 'Close', { duration: 3000 });
+        this.customerForm.reset();
+        this.customerForm.controls.documentNumber.setErrors(null);
+        this.customerForm.controls.email.setErrors(null);
+        this._store.resetCustomerCreation();
+      }
+    });
   }
 
   public createCustomer() {
@@ -79,7 +90,6 @@ export class App implements OnInit {
     };
 
     this._store.createCustomer(newCustomer);
-    this.customerForm.reset({ documentType: 'CC', documentNumber: '', fullName: '', email: '' });
   }
 
   public selectCustomer(customerId: string) {

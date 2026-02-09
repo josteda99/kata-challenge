@@ -1,8 +1,0 @@
-.table-wrapper {
-  width: 100%;
-  overflow-x: auto;
-}
-
-.table-wrapper table {
-  min-width: 800px; /* adjust if needed */
-}

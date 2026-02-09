@@ -45,7 +45,7 @@ tomorrow
 * adjust layout✅
 * styles✅
 * unit test
-* loading
+* loading✅
 * e2e???
 * think what is the best option to load info✅
 * add reset DB button

@@ -10,12 +10,14 @@ interface BankState {
   customers: CustomerWithAccount[];
   isLoading: boolean;
   selectedCustomer: CustomerWithAccount | null;
+  createCustomerSuccess: boolean;
 }
 
 const initialState: BankState = {
   customers: [],
   isLoading: false,
   selectedCustomer: null,
+  createCustomerSuccess: false,
 };
 
 export const BankStore = signalStore(
@@ -49,6 +51,7 @@ export const BankStore = signalStore(
               next: (customer) =>
                 patchState(store, {
                   customers: [...store.customers(), customer],
+                  createCustomerSuccess: true,
                   isLoading: false,
                 }),
               error: (err) => {
@@ -107,6 +110,11 @@ export const BankStore = signalStore(
     selectCustomer(customerId: string): void {
       patchState(store, {
         selectedCustomer: store.customers().find((customer) => customer.id === customerId),
+      });
+    },
+    resetCustomerCreation(): void {
+      patchState(store, {
+        createCustomerSuccess: false,
       });
     },
   })),

@@ -7,6 +7,16 @@ import { CustomerWithAccount } from '../../models/bank.models';
   selector: 'app-customers-table',
   imports: [MatTableModule, MatCardModule],
   templateUrl: './customers-table.component.html',
+  styles: `
+    .table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    .table-wrapper table {
+      min-width: 800px;
+    }
+  `,
 })
 export class CustomersTableComponent {
   public columns = input.required<string[]>();
