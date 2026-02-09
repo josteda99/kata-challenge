@@ -44,7 +44,7 @@ tomorrow
 * add validator front/back
 * adjust layout✅
 * styles✅
-* unit test
+* unit test (not specified)
 * loading✅
 * e2e???
 * think what is the best option to load info✅
